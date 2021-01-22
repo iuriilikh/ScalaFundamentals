@@ -1,5 +1,8 @@
 package functionstuff
 
+import java.sql.SQLException
+import scala.util.{Failure, Success, Try}
+
 object FunctDecls {
 
 
@@ -41,5 +44,26 @@ object FunctDecls {
     // pass by name parameters
     println(s"Today is ${dayName(dayOfWeek(day = 1, month = 22, year = 2021))}")
 
+    try {
+      // Math.random() is a Java feature
+      // math.random() is a Scala feature
+      if (math.random() > 0.5) throw new SQLException // Scala does not have "checked exceptions"
+      println(s"Day number -1 is ${dayName(-1)}")
+    } catch {
+      case t: SQLException => println("uh oh, db offline!")
+      case t: MatchError => println(s"That broke ${t.getMessage}")
+    } finally {
+      println("still going")
+    }
+    println("Out of the try structure")
+
+//    Try, has two subtypes, Success and Failure
+    Try {
+      if (math.random() > 0.5) throw new SQLException
+      else 99
+    } match {
+      case Success(v) => println(s"Value is ${v}")
+      case Failure(t) => println("that broke")
+    }
   }
 }
